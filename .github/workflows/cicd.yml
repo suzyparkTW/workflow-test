@@ -14,11 +14,13 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
             - name: Get tag
               id: get-tag
+              run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+
+            - name: Echo tag
               run: |
-                  echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+                  echo "💜"
                   echo "::debug::${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
