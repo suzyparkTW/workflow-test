@@ -19,9 +19,8 @@ jobs:
               id: get-tag
               run: |
                   _tag=$(echo ${GITHUB_REF#refs/tags/})
-                  echo "::debug::Set the Octocat variable"
-                  echo ::set-output name=tag::${_tag,,}
-                  echo "::debug::${{ steps.get-tag.outputs.tag }}"
+                #   echo ::set-output name=tag::${_tag,,}
+                  echo "::debug::💜 ${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
     #     if: github.event_name == 'push'
