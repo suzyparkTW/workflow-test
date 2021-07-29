@@ -20,7 +20,7 @@ jobs:
 
             - name: Echo tag
               run: |
-                  echo "💜 tag: ${{ steps.get-tag.outputs.tag }}"
+                  echo "::debug:: 💜tag: ${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
     #     if: github.event_name == 'push'
