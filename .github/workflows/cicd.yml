@@ -19,7 +19,6 @@ jobs:
               id: get-tag
               run: |
                   _tag=$(echo ${GITHUB_REF#refs/tags/})
-                #   echo ::set-output name=tag::${_tag,,}
                   echo "::debug::💜 ${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
