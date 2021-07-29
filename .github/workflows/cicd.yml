@@ -16,16 +16,12 @@ jobs:
         steps:
             - name: Get tag
               id: get-tag
-              run: |
-              echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-              console.log("💜tag: ${{steps.get-tag.outputs.tag}}")
-              
-              #   echo "::debug:: 💜tag: ${{ steps.get-tag.outputs.tag }}"
+              run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
 
             - name: Echo tag
               run: |
                   console.log("💜tag: ${{steps.get-tag.outputs.tag}}")
-                  echo "::debug:: 💜tag: ${{ steps.get-tag.outputs.tag }}"
+              #   echo "::debug:: 💜tag: ${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
     #     if: github.event_name == 'push'
