@@ -10,13 +10,13 @@ on:
 jobs:
     tag:
         if: github.ref == 'refs/tags/**'
-        name: Get tag
-        id: get-tag
+        name: test
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
-            - name: test
+            - name: Get tag
+              id: get-tag
               run: |
                   _tag=$(echo ${GITHUB_REF#refs/tags/})
                   echo "::debug::Set the Octocat variable"
