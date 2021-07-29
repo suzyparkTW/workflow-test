@@ -19,7 +19,7 @@ jobs:
               id: get-tag
               run: |
                   echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
-                  echo "::debug::${💜{ steps.get-tag.outputs.tag }}"
+                  echo "::debug::${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
     #     if: github.event_name == 'push'
