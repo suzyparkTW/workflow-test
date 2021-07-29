@@ -20,7 +20,7 @@ jobs:
 
             - name: Echo tag
               run: |
-                  console.log("💜tag: ${{steps.get-tag.outputs.tag}}")
+                  console.log(`💜tag: ${{steps.get-tag.outputs.tag}}`)
               #   echo "::debug:: 💜tag: ${{ steps.get-tag.outputs.tag }}"
 
     # deploy:
