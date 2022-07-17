@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Get current ISO8601 formatted date
         id: get-date
-        run: echo ::set-output name=date::date +"%Y-%m-%dT%H:%M:%S%z"
+        run: echo ::set-output name=date::date +"%Y-%m-%dT%H:%M:%SZ"
 
       - name: Get tag subject
         id: get-subject
