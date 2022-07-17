@@ -6,7 +6,7 @@ on:
       - "**"
 
 jobs:
-  notion versioning:
+  notion-versioning:
     if: startsWith(github.ref, 'refs/tags/v')
     name: request API
     runs-on: ubuntu-latest
