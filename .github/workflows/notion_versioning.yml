@@ -20,7 +20,9 @@ jobs:
 
       - name: Get tag subject
         id: get-subject
-        run: echo ::set-output name=subject::$(git tag -l --format='%(contents:subject)')
+        run: |
+          git init
+          echo ::set-output name=subject::$(git tag -l --format='%(contents:subject)'${GITHUB_REF#refs/*/})
 
       - name: Request API with curl
         id: request
