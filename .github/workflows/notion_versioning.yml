@@ -27,7 +27,9 @@ jobs:
       - name: Get tag
         id: get-tag
         run: |
-          echo ::set-output name=subject::$(git tag --format="%(subject)") 
+          _subject=$(git tag --format="%(subject)")
+          _type=$(_subject) | sed -nE "s/\[.*\]\[(.+)\].*/\1/"
+          echo ::set-output name=subject::${_subject}
           echo ::set-output name=tagger::$(git tag --format="%(tagger)") | cut -d "<" -f1
 
       - name: Request API with curl
@@ -77,6 +79,11 @@ jobs:
                       }
                     }
                   ]
+                },
+                "타입": {
+                  "select": {
+                    "name": "${{ steps.get-tag.outputs.type }}"
+                  }
                 }
               }
             }'
