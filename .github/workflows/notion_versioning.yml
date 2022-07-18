@@ -26,11 +26,11 @@ jobs:
 
       - name: Get tag subject
         id: get-subject
-        run: echo ::set-output name=subject::$(git tag -l --format='%(subject)' ${GITHUB_REF_NAME})
+        run: echo ::set-output name=subject::$(git for-each-ref --format="%(subject)" ${GITHUB_REF_NAME})
 
       - name: Get tag author
         id: get-author
-        run: echo ::set-output name=subject::$(git tag -l --format='%(authorname)' ${GITHUB_REF_NAME})
+        run: echo ::set-output name=authorname::$(git for-each-ref --format="%(authorname)" ${GITHUB_REF_NAME})
 
       - name: Request API with curl
         id: request
