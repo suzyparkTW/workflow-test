@@ -28,7 +28,7 @@ jobs:
         id: get-tag
         run: |
           echo ::set-output name=subject::$(git tag --format="%(subject)") 
-          echo ::set-output name=tagger::$(git tag --format="%(tagger)") | grep ".* <"
+          echo ::set-output name=tagger::$(git tag --format="%(tagger)") | grep "(?<=<)(.*)(?=@)"
 
       - name: Request API with curl
         id: request
