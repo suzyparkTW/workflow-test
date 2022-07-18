@@ -26,9 +26,11 @@ jobs:
 
       - name: Get tag subject
         id: get-subject
-        run: |
-          git init
-          echo ::set-output name=subject::$(git tag -l --format='%(contents)' ${GITHUB_REF_NAME})
+        run: echo ::set-output name=subject::$(git tag -l --format='%(subject)' ${GITHUB_REF_NAME})
+
+      - name: Get tag author
+        id: get-author
+        run: echo ::set-output name=subject::$(git tag -l --format='%(authorname)' ${GITHUB_REF_NAME})
 
       - name: Request API with curl
         id: request
@@ -64,6 +66,16 @@ jobs:
                       "type": "text",
                       "text": {
                         "content": "${{ steps.get-subject.outputs.subject }}"
+                      }
+                    }
+                  ]
+                },
+                "담당자": {
+                  "rich_text": [
+                    {
+                      "type": "text",
+                      "text": {
+                        "content": "${{ steps.get-subject.outputs.authorname }}"
                       }
                     }
                   ]
