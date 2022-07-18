@@ -28,10 +28,10 @@ jobs:
         id: get-tag
         run: |
           _subject=$(git tag --format="%(subject)")
-          _type=${_subject,,} | sed -r "s/\[.*\]\[(.+)\].*/\1/"
+          _type=${_subject} | sed -r "s/\[.*\]\[(.+)\].*/\1/"
           echo ::set-output name=subject::${_subject,,}
           echo ::set-output name=type::${type,,}
-          if [[ _type == null ]]
+          if [[ _type == "undefined" ]]
           then
             _type="기타"
           fi
