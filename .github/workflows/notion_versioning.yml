@@ -27,10 +27,10 @@ jobs:
       - name: Get tag
         id: get-tag
         run: |
-          _subject=$(git tag --format="%(subject)")-
-          _type=$(echo ${_subject} | sed -r "s/\[.*\]\[(.+)\].*/\1/")
+          _subject=$(git tag --format="%(subject)")
+
           echo ::set-output name=subject::${_subject,,}
-          echo ::set-output name=type::${_type,,}
+          echo ::set-output name=type::${_subject} | sed -r "s/\[.*\]\[(.+)\].*/\1/")
           echo ::set-output name=tagger::$(git tag --format="%(tagger)") | cut -d "<" -f1
 
       - name: Request API with curl
