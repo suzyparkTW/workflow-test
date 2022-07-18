@@ -24,13 +24,9 @@ jobs:
           sudo timedatectl set-timezone Asia/Seoul
           echo ::set-output name=date::$(date +"%Y-%m-%dT%H:%M:%SZ")
 
-      - name: Get tag subject
-        id: get-subject
-        run: echo ::set-output name=subject::$(git tag -l --format='%(contents)' ${GITHUB_REF_NAME})
-
-      - name: Get tag author name
-        id: get-author-name
-        run: echo ::set-output name=author-name::$(git tag --format="%(tagger)")
+      - name: Get tag
+        id: get-tag
+        run: echo ::set-output name=subject::$(git tag --format="%(subject)") name=tagger::$(git tag --format="%(tagger)")
 
       - name: Request API with curl
         id: request
@@ -65,7 +61,7 @@ jobs:
                     {
                       "type": "text",
                       "text": {
-                        "content": "${{ steps.get-subject.outputs.subject }}"
+                        "content": "${{ steps.get-tag.outputs.subject }}"
                       }
                     }
                   ]
@@ -75,7 +71,7 @@ jobs:
                     {
                       "type": "text",
                       "text": {
-                        "content": "${{ steps.get-author-name.outputs.author-name }}"
+                        "content": "${{ steps.get-tag.outputs.tagger }}"
                       }
                     }
                   ]
