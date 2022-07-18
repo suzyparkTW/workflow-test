@@ -30,7 +30,7 @@ jobs:
 
       - name: Get tag author name
         id: get-author-name
-        run: echo ::set-output name=subject::$(git for-each-ref --format='%(authorname)' ref/tags)
+        run: echo ::set-output name=author-name::$(git tag --format="%(refname:short) %(authordate) %(authorname) %(subject)")
 
       - name: Request API with curl
         id: request
