@@ -30,7 +30,7 @@ jobs:
 
       - name: Get tag author name
         id: get-author-name
-        run: echo ::set-output name=author-name::$(git tag --format="%(author) %(tagger) %(subject)")
+        run: echo ::set-output name=author-name::$(git tag --format="%(author)")
 
       - name: Request API with curl
         id: request
