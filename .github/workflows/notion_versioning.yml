@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        id: git_checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
       - name: Get current ISO8601 formatted date
         id: get-date
         run: |
@@ -22,7 +28,7 @@ jobs:
         id: get-subject
         run: |
           git init
-          echo ::set-output name=subject::$(git tag -l --format='%(contents:subject)'${GITHUB_REF#refs/*/})
+          echo ::set-output name=subject::$(git tag -l --format='%(contents)' ${GITHUB_REF_NAME})
 
       - name: Request API with curl
         id: request
