@@ -20,7 +20,7 @@ jobs:
 
       - name: Get tag subject
         id: get-subject
-        run: echo ::set-output name=subject::$(git tag -l --format='%(contents:subject)'
+        run: echo ::set-output name=subject::$(git tag -l --format='%(contents:subject)')
 
       - name: Request API with curl
         id: request
