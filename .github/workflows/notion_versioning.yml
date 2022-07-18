@@ -31,7 +31,7 @@ jobs:
           _type=${_subject} | sed -r "s/\[.*\]\[(.+)\].*/\1/"
           echo ::set-output name=subject::${_subject,,}
           echo ::set-output name=type::${type,,}
-          if [[ _type == "undefined" ]]
+          if [[ _type == undefined ]]
           then
             _type="기타"
           fi
