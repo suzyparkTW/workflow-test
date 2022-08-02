@@ -13,15 +13,6 @@ on:
       - completed
 
 jobs:
-  first-job:
-    name: check sth
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: check event
-        run : |
-          echo "event: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-
   notion-versioning:
       name: request API
       runs-on: ubuntu-latest
@@ -31,13 +22,8 @@ jobs:
           id: git_checkout
           uses: actions/checkout@v3
 
-        - name: Get current ISO8601 formatted date
-          id: get-date
-          run: |
-            sudo timedatectl set-timezone Asia/Seoul
-            echo ::set-output name=date::$(date +"%Y-%m-%dT%H:%M:%SZ")
-
         - name: Get tag on push event
+          id: get_by_push
           if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
           run: |
             _subject=$(git tag --format="%(subject)")
@@ -46,6 +32,7 @@ jobs:
             echo ::set-output name=tagger::$(git tag --format="%(tagger)") | cut -d "<" -f1
         
         - name: Get tag on workflow_run event 
+          id: get_by_merge
           if: github.event_name == 'workflow_run'
           run: |
             git fetch --prune --unshallow
@@ -54,8 +41,16 @@ jobs:
             echo ::set-output name=version::$(cat tag_name)
             echo ::set-output name=subject::${_subject}
             echo ::set-output name=tagger::$(git tag --format="%(tagger)" `cat tag_name`) | cut -d "<" -f1
+
+        - name: Get current ISO8601 formatted date
+          if: steps.get_by_push.outcome == 'success' || steps.get_by_merge.outcome == 'success'
+          id: get-date
+          run: |
+            sudo timedatectl set-timezone Asia/Seoul
+            echo ::set-output name=date::$(date +"%Y-%m-%dT%H:%M:%SZ")
         
         - name: Test
+          if: steps.get-date.outcome == 'success'
           run: |
             echo "ref: ${{ github.ref_name }} " >> $GITHUB_STEP_SUMMARY
             echo "time: ${{ steps.get-date.outputs.date}} " >> $GITHUB_STEP_SUMMARY
