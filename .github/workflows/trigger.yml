@@ -31,6 +31,7 @@ jobs:
         - name: Get tag
           id: get-tag
           run: |
+            git fetch --prune --unshallow
             _subject=$(git tag --format="%(subject)")
             echo ::set-output name=subject::${_subject,,}
             echo ::set-output name=type::${_subject,,} | sed -r "s/\[.*\]\[(.+)\].*/\1/"
