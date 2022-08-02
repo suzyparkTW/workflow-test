@@ -1,4 +1,4 @@
-name: notion_versioning2
+name: Conditional versioning
 
 on:
   push:
@@ -54,7 +54,7 @@ jobs:
             echo "SUBJECT=$(git tag -l --format="%(subject)" `cat tag_name`)" >> $GITHUB_ENV
             echo "TAGGER=$(git tag -l --format="%(tagger)" `cat tag_name` | cut -d "<" -f1)" >> $GITHUB_ENV
         
-        - name: Test
+        - name: Result for API
           run: |
             echo "ref: ${{ github.ref_name }} " >> $GITHUB_STEP_SUMMARY
             echo "time: ${{ steps.get-date.outputs.date}} " >> $GITHUB_STEP_SUMMARY
