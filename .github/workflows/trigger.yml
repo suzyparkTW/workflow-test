@@ -40,10 +40,9 @@ jobs:
           id: get_by_push
           if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
           run: |
-            _subject=$(git tag --format="%(subject)")
-            echo ::set-output name=version::${{ github.ref_name }}
-            echo ::set-output name=subject::${_subject,,}
-            echo ::set-output name=tagger::$(git tag --format="%(tagger)") | cut -d "<" -f1
+            echo "VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
+            echo "SUBJECT=$(git tag --format="%(subject)")" >> $GITHUB_ENV
+            echo "TAGGER=$(git tag --format="%(tagger)" | cut -d "<" -f1)" >> $GITHUB_ENV
         
         - name: Get tag on workflow_run event 
           id: get_by_merge
@@ -51,16 +50,15 @@ jobs:
           run: |
             git fetch --prune --unshallow
             git describe --tags `git rev-list --tags --max-count=1` > tag_name
-            _subject=$(git tag -l --format="%(subject)" `cat tag_name`)
-            echo ::set-output name=version::$(cat tag_name)
-            echo ::set-output name=subject::${_subject}
-            echo ::set-output name=tagger::$(git tag --format="%(tagger)" `cat tag_name`) | cut -d "<" -f1
+            echo "VERSION=$(cat tag_name)" >> $GITHUB_ENV
+            echo "SUBJECT=$(git tag -l --format="%(subject)" `cat tag_name`)" >> $GITHUB_ENV
+            echo "TAGGER=$(git tag -l --format="%(tagger)" `cat tag_name` | cut -d "<" -f1)" >> $GITHUB_ENV
         
         - name: Test
           run: |
             echo "ref: ${{ github.ref_name }} " >> $GITHUB_STEP_SUMMARY
             echo "time: ${{ steps.get-date.outputs.date}} " >> $GITHUB_STEP_SUMMARY
-            echo "version: ${{ steps.get-tag.outputs.version }} " >> $GITHUB_STEP_SUMMARY
-            echo "subject: ${{ steps.get-tag.outputs.subject }} " >> $GITHUB_STEP_SUMMARY
-            echo "tagger: ${{ steps.get-tag.outputs.tagger }} " >> $GITHUB_STEP_SUMMARY
+            echo "version: ${{ env.VERSION }} " >> $GITHUB_STEP_SUMMARY
+            echo "subject: ${{ env.SUBJECT }} " >> $GITHUB_STEP_SUMMARY
+            echo "tagger: ${{ env.TAGGER }} " >> $GITHUB_STEP_SUMMARY
             
