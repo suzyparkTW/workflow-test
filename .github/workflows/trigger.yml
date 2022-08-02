@@ -13,6 +13,13 @@ on:
       - completed
 
 jobs:
+  first-job:
+    name: check sth
+    steps:
+      - name: check event
+      - run : |
+        echo "event: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+
   notion-versioning1:
       name: request API
       runs-on: ubuntu-latest
@@ -44,6 +51,7 @@ jobs:
             echo "subject: ${{ steps.get-tag.outputs.subject }} " >> $GITHUB_STEP_SUMMARY
             echo "tagger: ${{ steps.get-tag.outputs.tagger }} " >> $GITHUB_STEP_SUMMARY
             echo "type: ${{ steps.get-tag.outputs.type }} " >> $GITHUB_STEP_SUMMARY
+
   notion-versioning2:
     if: startsWith(github.ref, 'refs/tags/v')
     name: request API
