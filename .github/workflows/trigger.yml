@@ -17,8 +17,8 @@ jobs:
     name: check sth
     steps:
       - name: check event
-      - run : |
-        echo "event: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        run : |
+          echo "event: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
 
   notion-versioning1:
       name: request API
