@@ -59,7 +59,7 @@ jobs:
           run: |
             echo "ref: ${{ github.ref_name }} " >> $GITHUB_STEP_SUMMARY
             echo "time: ${{ steps.get-date.outputs.date}} " >> $GITHUB_STEP_SUMMARY
-            echo "version: ${{ steps.get-tag.outputs.subject }} " >> $GITHUB_STEP_SUMMARY
+            echo "version: ${{ steps.get-tag.outputs.version }} " >> $GITHUB_STEP_SUMMARY
             echo "subject: ${{ steps.get-tag.outputs.subject }} " >> $GITHUB_STEP_SUMMARY
             echo "tagger: ${{ steps.get-tag.outputs.tagger }} " >> $GITHUB_STEP_SUMMARY
             
