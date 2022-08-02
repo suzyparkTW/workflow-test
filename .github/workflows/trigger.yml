@@ -1,6 +1,12 @@
-name: test
+name: Test Trigger
 
 on:
+  push:
+    branches:
+      - main
+    tags:
+      - "**"
+
   workflow_run:
     workflows: ["tagging"]
     types:
