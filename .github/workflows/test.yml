@@ -1,9 +1,10 @@
 name: test
 
 on:
-  push:
-    tags:
-      - "**"
+  workflow_run:
+    workflows: ["tagging"]
+    types:
+      - completed
 
 jobs:
   no-if:
