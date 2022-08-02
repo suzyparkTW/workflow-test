@@ -13,7 +13,37 @@ on:
       - completed
 
 jobs:
-  notion-versioning:
+  notion-versioning1:
+      name: request API
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout
+          id: git_checkout
+          uses: actions/checkout@v3
+
+        - name: Get current ISO8601 formatted date
+          id: get-date
+          run: |
+            sudo timedatectl set-timezone Asia/Seoul
+            echo ::set-output name=date::$(date +"%Y-%m-%dT%H:%M:%SZ")
+
+        - name: Get tag
+          id: get-tag
+          run: |
+            _subject=$(git tag --format="%(subject)")
+            echo ::set-output name=subject::${_subject,,}
+            echo ::set-output name=type::${_subject,,} | sed -r "s/\[.*\]\[(.+)\].*/\1/"
+            echo ::set-output name=tagger::$(git tag --format="%(tagger)") | cut -d "<" -f1
+        
+        - name: Test
+          run: |
+            echo "ref: ${{ github.ref_name }} " >> $GITHUB_STEP_SUMMARY
+            echo "time: ${{ steps.get-date.outputs.date}} " >> $GITHUB_STEP_SUMMARY
+            echo "subject: ${{ steps.get-tag.outputs.subject }} " >> $GITHUB_STEP_SUMMARY
+            echo "tagger: ${{ steps.get-tag.outputs.tagger }} " >> $GITHUB_STEP_SUMMARY
+            echo "type: ${{ steps.get-tag.outputs.type }} " >> $GITHUB_STEP_SUMMARY
+  notion-versioning2:
     if: startsWith(github.ref, 'refs/tags/v')
     name: request API
     runs-on: ubuntu-latest
