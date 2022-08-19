@@ -15,7 +15,11 @@ on:
 jobs:
   notion-versioning:
       if: >
-        github.event_name == 'workflow_run' ||
+        (
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.conclusion == 'success'
+        )
+        ||
         (
           github.event_name == 'push' &&
           startsWith(github.ref, 'refs/tags/v')
