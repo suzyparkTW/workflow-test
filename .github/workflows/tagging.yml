@@ -18,7 +18,7 @@ jobs:
 
       - name: Get the latest tag
         run: |
-          git fetch --prune --unshallow
+          git fetch --all --tags
           git tag -l --sort -v:refname | head -n 1 > tag
           echo `cat tag` | cut -d '.' -f3 > patch
           echo "MAJOR=$(echo `cat tag` | cut -d '.' -f1 | cut -c 2-)" >> $GITHUB_ENV
