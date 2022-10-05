@@ -1,0 +1,35 @@
+name: Tagging
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  tagging:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get the latest tag
+        run: |
+          git fetch --prune --unshallow
+          git tag -l --sort -v:refname | head -n 1 > tag
+          echo `cat tag` | cut -d '.' -f3 > patch
+          echo "MAJOR=$(echo `cat tag` | cut -d '.' -f1 | cut -c 2-)" >> $GITHUB_ENV
+          echo "MINOR=$(echo `cat tag` | cut -d '.' -f2)" >> $GITHUB_ENV
+          echo "PATCH=$(echo $((`cat patch` + 1)))" >> $GITHUB_ENV
+          echo "USER_NAME=$(echo `git log -n 1 --pretty=format:%an`)" >> $GITHUB_ENV
+          echo "USER_EMAIL=$(echo `git log -n 1 --pretty=format:%ae`)" >> $GITHUB_ENV
+
+      - name: Push tags
+        run: |
+          git config --global user.name "${{ env.USER_NAME }}"
+          git config --global user.email ${{ env.USER_EMAIL }}
+          git tag -a v${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.PATCH }} -m "${{ github.event.pull_request.title }}"
+          git push origin --tags
